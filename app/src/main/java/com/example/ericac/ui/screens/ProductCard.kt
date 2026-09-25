@@ -29,6 +29,7 @@ import com.example.ericac.model.Product
 @Composable
 fun ProductCard(
     product: Product,
+    quantity: Int,
     onIncrement: () -> Unit,
     onDecrement: () -> Unit,
 ) {
@@ -63,7 +64,7 @@ fun ProductCard(
             ) {
                 IconButton(
                     onClick = onDecrement,
-                    //enabled = quantity > 0 // Desabilita o botão se a quantidade for 0
+                    enabled = quantity > 0 // Desabilita o botão se a quantidade for 0
                 ) {
                     Icon(
                         Icons.Default.Remove,
@@ -72,7 +73,7 @@ fun ProductCard(
                 }
 
                 Text(
-                    text = (1..10).random().toString(),
+                    text = quantity.toString(),
                     style = MaterialTheme.typography.bodyLarge
                 )
 
@@ -92,10 +93,13 @@ fun ProductCard(
 fun ProductCardPreview() {
     ProductCard(
         product = Product(
+            id = 1,
             name = "Maçã",
-            image = R.drawable.apple
+            image = R.drawable.apple,
+            price = 28.75
         ),
         onIncrement = {},
-        onDecrement = {}
+        onDecrement = {},
+        quantity = 12
     )
 }
