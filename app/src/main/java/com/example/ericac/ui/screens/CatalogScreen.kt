@@ -50,9 +50,11 @@ fun CatalogScreen() {
                     )
                 }
             }
+        },
+        bottomBar = {
+            CheckoutBar()
         }
     ) { paddingValues ->
-        // Repassamos o padding do Scaffold para o conteúdo para não sobrepor a TopBar
         CatalogProducts(
             modifier = Modifier.padding(paddingValues)
         )
