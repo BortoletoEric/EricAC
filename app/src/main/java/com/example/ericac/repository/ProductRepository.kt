@@ -3,7 +3,7 @@ package com.example.ericac.repository
 import com.example.ericac.R
 import com.example.ericac.model.Product
 
-class ProductRepository {
+object ProductRepository {
     val products = listOf(
         Product(
             name = "Maça",
