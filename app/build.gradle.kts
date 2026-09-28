@@ -3,6 +3,22 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+val flavors = setOf(
+    "linxtef" to 23, //subi pra 23 manualmente pq meu projeto n roda com 22
+    "linxtefadyen" to 28,
+    "linxtefgpos760" to 22,
+    "linxtefgpos720" to 22,
+    "stone" to 22,
+    "pagseguro" to 23,
+    "vero" to 22,
+    "getnet" to 22,
+    "rede" to 28,
+    "cielo" to 25,
+    "sicoob" to 24,
+    "sitef" to 22,
+    "gsurf" to 26,
+)
+
 android {
     namespace = "com.example.ericac"
     compileSdk {
@@ -33,12 +49,34 @@ android {
     buildFeatures {
         compose = true
     }
+
+    flavorDimensions += "providers"
+    productFlavors {
+        flavors.forEach{
+            create(it.first) {
+                minSdk = it.second
+            }
+        }
+    }
+}
+
+// Defina a versão desejada utilizando o '+' para buscar o último build da release
+val sdkPayServicesVersion = "2.2.0.+"
+val adquirente = "stone"
+
+// (Recomendado) Reduz o tempo de cache para buscar atualizações rapidamente
+configurations.all {
+    resolutionStrategy.cacheDynamicVersionsFor(30, "minutes")
 }
 
 dependencies {
+    implementation("SDKPayServices:core-$adquirente:$sdkPayServicesVersion")
+    implementation("SDKPayServices:$adquirente:$sdkPayServicesVersion")
+    implementation("SDKPayServices:config:$sdkPayServicesVersion")
+    implementation("SDKPayServices:common:$sdkPayServicesVersion")
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
