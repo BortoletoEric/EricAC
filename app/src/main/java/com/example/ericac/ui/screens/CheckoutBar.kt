@@ -21,7 +21,7 @@ import com.example.ericac.ui.components.PrimaryButton
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun CheckoutBar(total: Double) {
+fun CheckoutBar(total: Double, onPayClick: () -> Unit) {
     Row(
         modifier = Modifier
             .background(Color.Black)
@@ -40,15 +40,14 @@ fun CheckoutBar(total: Double) {
         PrimaryButton(
             modifier = Modifier.width(200.dp),
             text = "Pagar",
-            onClick = {
-
-            }
+            onClick = onPayClick
         )
     }
 }
 
 @Composable
 @Preview
-fun CheckoutBarPreview() {
-    CheckoutBar(28.95)
+fun CheckoutBarPreview(
+    onCheckoutClick: () -> Unit) {
+    CheckoutBar(28.95, onPayClick = onCheckoutClick)
 }

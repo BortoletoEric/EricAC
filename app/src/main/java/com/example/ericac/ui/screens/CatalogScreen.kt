@@ -30,7 +30,10 @@ import com.example.ericac.ui.theme.EricACTheme
 import com.example.ericac.viewmodel.CartViewModel
 
 @Composable
-fun CatalogScreen(cartViewModel: CartViewModel = viewModel()) {
+fun CatalogScreen(
+    cartViewModel: CartViewModel = viewModel(),
+    onNavigateToPayment: (Double) -> Unit
+) {
     val cartItems by cartViewModel.cartItems.collectAsState()
     val totalPrice = cartViewModel.getTotalPrice()
 
@@ -42,15 +45,18 @@ fun CatalogScreen(cartViewModel: CartViewModel = viewModel()) {
         catalogOnIncrement = { product -> cartViewModel.increment(product) },
         catalogOnDecrement = { product -> cartViewModel.decrement(product) },
         totalPrice = totalPrice,
-        products = products
+        products = products,
+        onCheckoutClick = { onNavigateToPayment(totalPrice) } // NOVO PARÂMETRO REPASSADO
     )
 }
+
 @Composable
 fun CatalogProducts(
     modifier: Modifier = Modifier,
     cartItens: Map<Product, Int>,
     catalogOnIncrement: (Product) -> Unit,
     catalogOnDecrement: (Product) -> Unit,
+    onCheckoutClick: () -> Unit,
     totalPrice: Double,
     products: List<Product>
 
@@ -81,7 +87,7 @@ fun CatalogProducts(
             }
         },
         bottomBar = {
-            CheckoutBar(total = totalPrice)
+            CheckoutBar(total = totalPrice, onPayClick = onCheckoutClick)
         }
     ) { paddingValues ->
         LazyVerticalGrid(
@@ -126,7 +132,8 @@ fun CatalogScreenPreview() {
             totalPrice = 10.0, // 2 maçãs * 5.0
             catalogOnIncrement = {}, // Não faz nada no preview
             catalogOnDecrement = {}, // Não faz nada no preview
-            products = mockProducts
+            products = mockProducts,
+            onCheckoutClick = {},
         )
     }
 }
