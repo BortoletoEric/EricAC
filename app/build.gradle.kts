@@ -62,7 +62,7 @@ android {
 
 // Defina a versão desejada utilizando o '+' para buscar o último build da release
 val sdkPayServicesVersion = "2.2.0.+"
-val adquirente = "stone"
+val adquirente = "linxtef"
 
 // (Recomendado) Reduz o tempo de cache para buscar atualizações rapidamente
 configurations.all {
