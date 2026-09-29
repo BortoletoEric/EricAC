@@ -93,7 +93,7 @@ fun AppNavigation() {
                 onPaymentSelected = { paymentType ->
                     // Verifica o tipo de pagamento selecionado e chama a função correspondente
                     when (paymentType) {
-                        PaymentTypes.PIX -> paymentViewModel.payPixDeeplink(context, totalAmount)
+                        PaymentTypes.PIX -> { /* Implementar depois */ }
                         PaymentTypes.CREDIT -> { /* Implementar depois */ }
                         PaymentTypes.DEBIT -> { /* Implementar depois */ }
                     }
