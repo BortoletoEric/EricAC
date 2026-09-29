@@ -26,4 +26,8 @@ class PaymentViewModel : ViewModel() {
 
         })
     }
+
+    fun pay() {
+        TODO("Not yet implemented")
+    }
 }
