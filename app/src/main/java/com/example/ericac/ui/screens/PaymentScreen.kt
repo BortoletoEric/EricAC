@@ -23,7 +23,21 @@ import com.example.ericac.ui.components.PrimaryButton
 fun PaymentScreen(
     total: Double,
     onNavigateBack: () -> Unit,
-    onPaymentSelected: (PaymentTypes) -> Unit // Criaremos esse Enum abaixo
+    onPaymentSelected: (PaymentTypes) -> Unit
+) {
+    PaymentTypesScreen(
+        total = total,
+        onNavigateBack = onNavigateBack,
+        onPaymentSelected = onPaymentSelected
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PaymentTypesScreen(
+    total: Double,
+    onNavigateBack: () -> Unit,
+    onPaymentSelected: (PaymentTypes) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -32,7 +46,7 @@ fun PaymentScreen(
                 title = { Text("Pagamento") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Text("< Voltar") // Pode usar um Icon aqui depois
+                        Text("Voltar") // Pode usar um Icon aqui depois
                     }
                 }
             )

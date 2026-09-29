@@ -67,6 +67,8 @@ val adquirente = "stone"
 // (Recomendado) Reduz o tempo de cache para buscar atualizações rapidamente
 configurations.all {
     resolutionStrategy.cacheDynamicVersionsFor(30, "minutes")
+    // Evita o crash do Manifest Merger removendo a biblioteca duplicada da Gertec
+    exclude(group = "com.gertec", module = "ppcomp-gpos780-release")
 }
 
 dependencies {
@@ -76,6 +78,7 @@ dependencies {
     implementation("SDKPayServices:common:$sdkPayServicesVersion")
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui)
