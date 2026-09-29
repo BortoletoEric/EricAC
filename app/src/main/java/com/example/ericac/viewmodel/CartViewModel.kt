@@ -36,4 +36,8 @@ class CartViewModel : ViewModel() {
             product.price * quantity
         }
     }
+
+    fun clearCart() {
+        _cartItems.value = emptyMap()
+    }
 }
