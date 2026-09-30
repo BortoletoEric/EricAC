@@ -1,5 +1,6 @@
 package com.example.ericac.ui.screens
 
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,7 +33,8 @@ import com.example.ericac.viewmodel.CartViewModel
 @Composable
 fun CatalogScreen(
     cartViewModel: CartViewModel = viewModel(),
-    onNavigateToPayment: (Double) -> Unit
+    onNavigateToPayment: (Double) -> Unit,
+    onActivateSdk: () -> Unit,
 ) {
     val cartItems by cartViewModel.cartItems.collectAsState()
     val totalPrice = cartViewModel.getTotalPrice()
@@ -44,9 +46,11 @@ fun CatalogScreen(
         cartItens = cartItems,
         catalogOnIncrement = { product -> cartViewModel.increment(product) },
         catalogOnDecrement = { product -> cartViewModel.decrement(product) },
+        onCheckoutClick = { onNavigateToPayment(totalPrice) },
         totalPrice = totalPrice,
         products = products,
-        onCheckoutClick = { onNavigateToPayment(totalPrice) } // NOVO PARÂMETRO REPASSADO
+        onActivateSdkClick = onActivateSdk,
+        // NOVO PARÂMETRO REPASSADO
     )
 }
 
@@ -58,7 +62,8 @@ fun CatalogProducts(
     catalogOnDecrement: (Product) -> Unit,
     onCheckoutClick: () -> Unit,
     totalPrice: Double,
-    products: List<Product>
+    products: List<Product>,
+    onActivateSdkClick: () -> Unit
 
 ) {
 
@@ -79,9 +84,13 @@ fun CatalogProducts(
                     contentAlignment = Alignment.CenterStart
                 ) {
                     Text(
-                        text = "Meu App",
+                        text = "Eric Automação Comercial",
                         style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.combinedClickable(
+                            onClick = { }, // Clique simples opcional
+                            onLongClick = { onActivateSdkClick() } // Clique longo dispara a ativação
+                        )
                     )
                 }
             }
@@ -129,11 +138,12 @@ fun CatalogScreenPreview() {
         CatalogProducts(
             modifier = Modifier.fillMaxSize(),
             cartItens = mockCartItems,
-            totalPrice = 10.0, // 2 maçãs * 5.0
-            catalogOnIncrement = {}, // Não faz nada no preview
+            catalogOnIncrement = {}, // 2 maçãs * 5.0
             catalogOnDecrement = {}, // Não faz nada no preview
+            onCheckoutClick = {}, // Não faz nada no preview
+            totalPrice = 10.0,
             products = mockProducts,
-            onCheckoutClick = {},
+            onActivateSdkClick = {} // Não faz nada no Preview
         )
     }
 }

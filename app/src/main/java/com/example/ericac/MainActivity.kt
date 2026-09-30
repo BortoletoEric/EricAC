@@ -60,6 +60,9 @@ fun AppNavigation() {
                             Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                         }
                     }
+                },
+                onActivateSdk = {
+                    buildPaykit(context)
                 }
             )
         }
