@@ -28,7 +28,7 @@ android {
     defaultConfig {
         applicationId = "com.example.ericac"
         minSdk = 24
-        targetSdk = 37
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -62,7 +62,7 @@ android {
 
 // Defina a versão desejada utilizando o '+' para buscar o último build da release
 val sdkPayServicesVersion = "2.2.0.+"
-val adquirente = "linxtef"
+val adquirente = "cielo"
 
 // (Recomendado) Reduz o tempo de cache para buscar atualizações rapidamente
 configurations.all {

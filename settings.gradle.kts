@@ -29,7 +29,7 @@ dependencyResolutionManagement {
 
         maven {
             name = "SDK_UNICO"
-            url = uri("https://pkgs.dev.azure.com/stndtef/SmartPOS/_packaging/SDK_UNICO@Release/maven/v1")
+            url = uri("https://pkgs.dev.azure.com/stndtef/SmartPOS/_packaging/SDK_UNICO/maven/v1")
             credentials {
                 username = "stndtef"
                 password = azureToken
