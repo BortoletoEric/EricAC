@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ericac.payment.buildPaykit
 import com.example.ericac.ui.screens.CatalogScreen
 import com.example.ericac.ui.theme.EricACTheme
+import com.example.ericac.utils.ReceiptHelper
 import com.example.ericac.viewmodel.CartViewModel
 import com.example.ericac.viewmodel.PaymentViewModel
 
@@ -47,17 +48,22 @@ fun AppNavigation() {
             CatalogScreen(
                 cartViewModel = cartViewModel, // Passa a referência para a tela
                 onNavigateToPayment = { totalAmount ->
-
-                    paymentViewModel.iniciarPagamentoWhiteLabel(totalAmount) { sucesso, msg ->
+                    paymentViewModel.iniciarPagamentoWhiteLabel(totalAmount) { sucesso, msgPagamento ->
                         if (sucesso) {
-                            // 3. Usa o 'context' capturado em vez de 'this'
-                            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, msgPagamento, Toast.LENGTH_SHORT).show()
 
-                            // 4. Esvazia o carrinho após o pagamento aprovado
-                            cartViewModel.clearCart()
+                            // 1. Gera o Bitmap do recibo mockado
+                            val receiptBitmap = ReceiptHelper.createMockReceiptBitmap(totalAmount)
+
+                            // 2. Aciona a impressão
+                            paymentViewModel.imprimirRecibo(receiptBitmap) { impressaoSucesso, msgImpressao ->
+                                Toast.makeText(context, msgImpressao, Toast.LENGTH_LONG).show()
+
+                                // 3. Esvazia o carrinho somente após finalizar tudo
+                                cartViewModel.clearCart()
+                            }
                         } else {
-                            // Bom também mostrar a mensagem se o usuário cancelar ou der erro
-                            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, msgPagamento, Toast.LENGTH_LONG).show()
                         }
                     }
                 },
