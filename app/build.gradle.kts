@@ -8,7 +8,7 @@ val flavors = setOf(
     "linxtefadyen" to 28,
     "linxtefgpos760" to 22,
     "linxtefgpos720" to 22,
-    "stone" to 22,
+    "stone" to 23, //subi pra 23 manualmente pq meu projeto n roda com 22
     "pagseguro" to 23,
     "vero" to 22,
     "getnet" to 22,
@@ -62,7 +62,7 @@ android {
 
 // Defina a versão desejada utilizando o '+' para buscar o último build da release
 val sdkPayServicesVersion = "2.2.0.+"
-val adquirente = "cielo"
+val adquirente = "stone"
 
 // (Recomendado) Reduz o tempo de cache para buscar atualizações rapidamente
 configurations.all {
