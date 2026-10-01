@@ -40,29 +40,40 @@ fun AppNavigation() {
         composable("catalog") {
             // 1. Instancia as ViewModels
             val paymentViewModel: PaymentViewModel = viewModel()
-            val cartViewModel: CartViewModel = viewModel() // Para podermos limpar os itens depois
-
-            // 2. Captura o contexto corretamente no Compose
+            val cartViewModel: CartViewModel = viewModel()
             val context = LocalContext.current
 
             CatalogScreen(
                 cartViewModel = cartViewModel, // Passa a referência para a tela
                 onNavigateToPayment = { totalAmount ->
-                    paymentViewModel.iniciarPagamentoWhiteLabel(totalAmount) { sucesso, msgPagamento ->
-                        if (sucesso) {
+                    // INICIO PAGAMENTO
+                    paymentViewModel.iniciarPagamentoWhiteLabel(totalAmount) { sucesso, msgPagamento, transactionId ->
+                        if (sucesso && transactionId != null) {
                             Toast.makeText(context, msgPagamento, Toast.LENGTH_SHORT).show()
 
-                            // 1. Gera o Bitmap do recibo mockado
                             val receiptBitmap = ReceiptHelper.createMockReceiptBitmap(totalAmount)
 
-                            // 2. Aciona a impressão
+                            //INICIO IMPRESSÃO
                             paymentViewModel.imprimirRecibo(receiptBitmap) { impressaoSucesso, msgImpressao ->
-                                Toast.makeText(context, msgImpressao, Toast.LENGTH_LONG).show()
+                                if (impressaoSucesso) {
+                                    Toast.makeText(context, "Venda concluída e impressa!", Toast.LENGTH_LONG).show()
+                                    cartViewModel.clearCart() // Sucesso total, limpa carrinho
+                                } else {
+                                    // ERRO IMPRESSÃO -> CUIDADO: Pagamento passou, mas impressora falhou. INICIAR ROLLBACK!
+                                    Toast.makeText(context, "Falha na impressora. Iniciando estorno...", Toast.LENGTH_LONG).show()
 
-                                // 3. Esvazia o carrinho somente após finalizar tudo
-                                cartViewModel.clearCart()
+                                    paymentViewModel.cancelarPagamento(transactionId, totalAmount) { cancelado, msgCancelamento ->
+                                        if (cancelado) {
+                                            Toast.makeText(context, "Venda estornada por falha de impressão.", Toast.LENGTH_LONG).show()
+                                        } else {
+                                            // ERRO CANCELAMENTO -> A pior situação possível. Cancelamento falhou. O lojista precisa cancelar manualmente no portal.
+                                            Toast.makeText(context, "ERRO CRÍTICO: Não foi possível estornar. Contate o suporte.", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+                                }
                             }
-                        } else {
+                        } // ERRO PAGAMENTO
+                        else {
                             Toast.makeText(context, msgPagamento, Toast.LENGTH_LONG).show()
                         }
                     }
